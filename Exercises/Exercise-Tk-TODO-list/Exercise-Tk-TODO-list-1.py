@@ -35,19 +35,48 @@ c = conn.cursor()
 c.execute("""CREATE TABLE IF NOT EXISTS todo""")
 
 def rootclose():
-  pass
+  root.destroy()
 
 def delpopup1():
-  pass
+  messagebox.showinfo("INFO", "ENTER TASK ID TO DELETE")
 
 def editpopup1():
-  pass
+  messagebox.showinfo("INFO", "ENTER TASK ID TO EDIT")
 
 def editpopup2():
-  pass
+  messagebox.showinfo("INFO", "ENTER VALID TASK ID TO EDIT")
 
 def add():
-  pass
+  global show_labelframe
+  global labelframe_content
+  global j
+
+  conn = sqlite3.connect('todo.db')
+  c = conn.cursor()
+  if (add_entry.get()==""):
+    response = messagebox.askyesno("warning","wanna enter empty Task?")
+    if (response==1):
+      c.execute("INSERT INTO todo VALUES (:task)",
+              {
+              'task':add_entry.get()
+              })
+      show_labelframe.destroy()
+      labelframe_content.destroy()
+    else:
+      pass
+  else:
+    c.execute("INSERT INTO todo VALUES (:task)",
+                    {
+                    'task':add_entry.get()
+                    }
+  add_entry.delete(0,END)
+  show_labelframe.destroy()
+  labelframe_content.destroy()
+
+  conn.commit()
+  conn.close()
+  show()
+
 
 def delete():
   pass
