@@ -79,10 +79,54 @@ def add():
 
 
 def delete():
-  pass
+  global show_labelframe
+  global labelframe_content
+  global j
+
+  conn = sqlite3.connect('todo.db')
+  c = conn.cursor()
+
+  try:
+    c.execute("DELETE FROM todo WHERE oid="+del_entry.get())
+    del_entry.delete(0,END)
+    j = j - 1
+
+  except sqlite3.OperationalError as e:
+    delpopup1()
+
+  show_labelframe.destroy()
+  labelframe_content.destroy()
+
+  conn.commit()
+  conn.close()
+  show()
+
 
 def show():
-  pass
+  global show_labelframe
+  global labelframe_content
+  global j
+
+  conn = sqlite3.connect('todo.db')
+  c = conn.cursor()
+  c.execute("SELECT task,oid FROM todo")
+  records = c.fetchall()
+  print_records = ''
+  for record in records:
+    print_records += "   "+str(record[1])+"   "+str(record[0])+","
+
+  a = print_records.split(",")
+  show_labelframe = LabelFrame(root, text="Your Tasks To Do")
+  show_labelframe.grid(row=0, column=2, rowspan=6, columnspan=2)
+  default_label = Label(show_labelframe, text="  ID  TASK")
+  default_label.grid(row=0, column=0, sticky=W)
+  for i in a:
+    labelframe_content = Label(show_labelframe, text=i)
+    labelframe_content.grid(row=j, column=0, columnspan=2, sticky=W)
+    j = j + 1
+
+  conn.commit()
+  conn.close()
 
 def update():
   pass
@@ -95,6 +139,3 @@ show()
 conn.commit()
 conn.close()
 root.mainloop()
-
-
-
