@@ -129,7 +129,25 @@ def show():
   conn.close()
 
 def update():
-  pass
+  global edit
+  global r, n
+
+  conn = sqlite3.connect('todo.db')
+  c = conn.cursor()
+
+  r = to_entry.get()
+  n = edit_entry_edit.get()
+
+  c.execute("""UPDATE todo SET task=:tasky WHERE oid=:oid""",{
+    'tasky':r,
+    'oid':n})
+  edit.destroy()
+
+  show_labelframe.destroy()
+  labelframe_content.destroy()
+  conn.commit()
+  conn.close()
+  show()
 
 def edit():
   pass
