@@ -150,7 +150,51 @@ def update():
   show()
 
 def edit():
-  pass
+  try:
+    global to_entry
+    global edit_entry_edit
+    global r, n
+    global edit
+    global edit_entry 
+    conn = sqlite3.connect('todo.db')
+    c = conn.cursor()
+    edit = Tk()
+    edit.title("Edit Task")
+
+    edit_entry_label = Label(edit, text="Task ID:")
+    edit_entry_edit = Entry(edit, width=5)
+    to_label = Label(edit, Text="To:")
+    to_entry = Entry(edit, width=60)
+
+    c.execute("SELECT task FROM todo WHERE oid="+edit_entry.get())
+    r1=c.fetchone()
+    r= str(r1[0])
+    n = edit_entry.get()
+
+    edit_entry_edit.insert(0,n)
+    to_entry.insert(0,r)
+
+    edit_btn_edit = Button(edit, text="edit task", fg="white", bg="#1E90FF",border=2,command=update)
+    edit_entry_label.grid(row=0, column=0, padx=5, pady=5, sticky=W)
+    edit_entry_edit.grid(row=0, column=1, padx=5, pady=5, sticky=W)
+    to_label.grid(row=0, column=2, padx=5, pady=5, sticky=W)
+    to_entry.grid(row=0, column=3, padx=5, pady=5, sticky=W)
+    edit_btn_edit.grid(row=1, column=0, columnspan=4, padx=10, pady=5, ipadx=169, ipady=10)
+
+    conn.commit()
+    conn.close()
+
+  except sqlite3.OperationalError as e:
+    edit.destroy()
+    editpopup1()
+
+  except TypeError as e:
+    edit.destroy()
+    editpopup2()
+
+  edit_entry.delete(0, END)
+  edit.mainloop()
+
 
 show()
 
