@@ -32,7 +32,7 @@ j = 1
 conn = sqlite3.connect('todo.db')
 c = conn.cursor()
 
-c.execute("""CREATE TABLE IF NOT EXISTS todo""")
+c.execute("""CREATE TABLE IF NOT EXISTS todo (task text)""")
 
 def rootclose():
   root.destroy()
@@ -53,30 +53,24 @@ def add():
 
   conn = sqlite3.connect('todo.db')
   c = conn.cursor()
-  if (add_entry.get()==""):
+
+  if(add_entry.get() == ""):
     response = messagebox.askyesno("warning","wanna enter empty Task?")
-    if (response==1):
-      c.execute("INSERT INTO todo VALUES (:task)",
-              {
-              'task':add_entry.get()
-              })
+    if(response==1):
+      c.execute("INSERT INTO todo Values (:task)", {'task':add_entry.get()})
       show_labelframe.destroy()
       labelframe_content.destroy()
     else:
       pass
   else:
-    c.execute("INSERT INTO todo VALUES (:task)",
-                    {
-                    'task':add_entry.get()
-                    }
-  add_entry.delete(0,END)
+    c.execute("INSERT INTO todo Values (:task)", {'task': add_entry.get()})
+  add_entry.delete(0, END)
   show_labelframe.destroy()
   labelframe_content.destroy()
 
   conn.commit()
   conn.close()
   show()
-
 
 def delete():
   global show_labelframe
@@ -197,6 +191,39 @@ def edit():
 
 
 show()
+
+global add_entry
+global edit_entry
+global del_entry
+
+add_label = Label(root, text="Add a Task")
+add_entry = Entry(root, width=50)
+add_btn = Button(root, text="Add Task", fg="white", bg="#1E90FF",border=2,command=add)
+
+edit_label = Label(root, text="Edit Id")
+edit_entry = Entry(root, width=50)
+edit_btn = Button(root, text="Edit Task", fg="white", bg="#1E90FF",border=2, command=edit)
+
+del_label = Label(root, text="Delete Id")
+del_entry = Entry(root, width=50)
+del_btn = Button(root, text="Delete Task", fg="white", bg="#1E90FF",border=2, command=delete)
+
+final_del_btn = Button(root, text="EXIT", fg="white", bg="#1E90FF", border=2, command=rootclose)
+
+add_label.grid(row=0, column=0, padx=10, pady=5, sticky=W)
+add_entry.grid(row=0, column=1, padx=10, pady=5)
+add_btn.grid(row=1, column=0, padx=10, pady=5, columnspan=2, ipadx=167, ipady=10)
+
+edit_label.grid(row=2, column=0, padx=10, pady=5, sticky=W)
+edit_entry.grid(row=2, column=1, padx=10, pady=5)
+edit_btn.grid(row=3, column=0, padx=10, pady=5, columnspan=2, ipadx=169, ipady=10)
+
+del_label.grid(row=4, column=0, padx=10, pady=5, sticky=W)
+del_entry.grid(row=4, column=1, padx=10, pady=5)
+del_btn.grid(row=5, column=0, padx=10, pady=5, columnspan=2, ipadx=163, ipady=10)
+
+#final_del_btn.grid(row=6, column=0, padx=10, pady=5, columnspan=2, ipadx=163, ipady=10)
+
 
 conn.commit()
 conn.close()
