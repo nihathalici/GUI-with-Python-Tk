@@ -15,7 +15,10 @@ Create a Tk application to handle your TODO items.
   fit.
 """
 
-# Source: https://github.com/ReconCubed/todo.py
+#####
+# Solution source:
+# https://github.com/ReconCubed
+#####
 
 import dataset
 import tkinter
