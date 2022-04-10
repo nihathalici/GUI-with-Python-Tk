@@ -15,10 +15,7 @@ Create a Tk application to handle your TODO items.
   fit.
 """
 
-#####
-# Solution source:
-# https://github.com/ReconCubed
-#####
+# Source: https://github.com/ReconCubed/todo.py
 
 import dataset
 import tkinter
@@ -36,24 +33,48 @@ date_time = datetime.datetime.now()
 date = date_time.date()  # gives date
 time = date_time.time()  # gives time
 
+# DEBUGGING FUNCS
 def dropRefresh():
-  pass
+  items.drop()
+  items = db.create_table('items', primary_id='id', primary_type='Integer')
 
+# print all items in the table
 def debugPrint():
-  pass
+  print("---------------------------")
+  for item in db['items']:
+    print(item['id'], item['node'], sep='. ')
 
+# delete all nodes in table
 def deleteAll():
-  pass
+  items.delete()
 
+# insert a new item into our table
 def newItem(item):
-  pass
+  curTime = str(date.day) + '/' + str(date.month) + '/' + str(date.year)
+  items.insert(dict(node=item, creationtime=curTime))
 
+# remove an item from our table
 def removeItem(identifier):
-  pass
+  items.delete(id=identifier)
 
 class Todo(tkinter.Tk):
   def __init__(self):
-    pass
+    tkinter.Tk.__init__(self)
+    self.title("Todo")
+
+    self.todoList = tkinter.Listbox()
+    #self.todoList('<<ListboxSelect', self.deleteFromList())
+    self.todoList.pack(fill=tkinter.BOTH, expand=0)
+
+    # entry box & button for new todo items
+    self.entry = tkinter.Entry()
+    self.entry.pack(fill=tkinter.BOTH, expand=0)
+
+    entryButton = tkinter.Button(text="Enter", command=self.addToList)
+    entryButton.pack(fill=tkinter.BOTH, expand=0)
+
+
+
 
   def refreshList(self):
     pass
