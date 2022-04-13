@@ -73,17 +73,39 @@ class Todo(tkinter.Tk):
     entryButton = tkinter.Button(text="Enter", command=self.addToList)
     entryButton.pack(fill=tkinter.BOTH, expand=0)
 
+    # delete items box & button
+    self.deleteOption = tkinter.Entry()
+    self.deleteOption.pack(fill=tkinter.BOTH, expand=0)
 
+    deleteButton = tkinter.Button(text="Delete", command=self.deleteFromList)
+    deleteButton.pack(fill=tkinter.BOTH, expand=0)
+
+    # update the application on startup with items already
+    # in the database
+    self.refreshList()
 
 
   def refreshList(self):
-    pass
+    for items in db['items']:
+      item = str(items['id']) + ". " + str(items['node']) + " - Created at " + str(items['creationtime'])
+      self.todoList.insert(tkinter.END, str(item))
+      self.todoList.update_idletasks() 
 
   def addToList(self):
-    pass
+    newItem(str(self.entry.get()))
+    self.todoList.delete(0, tkinter.END)
+    self.todoList.update_idletasks()
+    self.entry.delete(0, 'end')
+    self.refreshList()
+    debugPrint()
 
   def deleteFromList(self):
-    pass
+    removeItem(int(self.deleteOption.get()))
+    self.todoList.delete(0, tkinter.END)
+    self.todoList.update_idletasks()
+    self.deleteOption.delete(0, 'end')
+    self.refreshList()
+    debugPrint()
 
 if __name__ == "__main__":
   application = Todo()
