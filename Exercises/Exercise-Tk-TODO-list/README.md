@@ -14,7 +14,7 @@ Tk-TODO-list-1.py | Sample Output
 TODO List - 2
 ========================================================
 
-A simple todo-list desktop widget using TKinter and sqlite3.
+Another simple widget using TKinter and sqlite3.
 
 Tk-TODO-list-2.py | Sample Output
 ========================================================
